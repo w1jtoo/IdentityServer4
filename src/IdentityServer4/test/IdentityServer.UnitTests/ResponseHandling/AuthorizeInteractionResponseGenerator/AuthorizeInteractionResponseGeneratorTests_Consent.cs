@@ -259,7 +259,7 @@ namespace IdentityServer4.UnitTests.ResponseHandling
         {
             RequiresConsent(true);
             var client = new Client {};
-            var scopeValidator = new ScopeValidator(new InMemoryResourcesStore(GetIdentityScopes(), GetApiScopes()), TestLogger.Create<ScopeValidator>());
+            var scopeValidator = new ScopeValidator(new InMemoryResourcesStore(GetIdentityScopes(), GetApiScopes()), TestLogger.Create<IScopeValidator>());
             var request = new ValidatedAuthorizeRequest()
             {
                 ResponseMode = OidcConstants.ResponseModes.Fragment,
@@ -292,7 +292,7 @@ namespace IdentityServer4.UnitTests.ResponseHandling
                 ResponseMode = OidcConstants.ResponseModes.Fragment,
                 State = "12345",
                 RedirectUri = "https://client.com/callback",
-                ValidatedScopes = new ScopeValidator(new InMemoryResourcesStore(GetIdentityScopes(), GetApiScopes()), new LoggerFactory().CreateLogger<ScopeValidator>()),
+                ValidatedScopes = new ScopeValidator(new InMemoryResourcesStore(GetIdentityScopes(), GetApiScopes()), new LoggerFactory().CreateLogger<IScopeValidator>()),
                 Client = new Client {
                     AllowRememberConsent = false
                 }
@@ -320,7 +320,7 @@ namespace IdentityServer4.UnitTests.ResponseHandling
                 ResponseMode = OidcConstants.ResponseModes.Fragment,
                 State = "12345",
                 RedirectUri = "https://client.com/callback",
-                ValidatedScopes = new ScopeValidator(new InMemoryResourcesStore(GetIdentityScopes(), GetApiScopes()), new LoggerFactory().CreateLogger<ScopeValidator>()),
+                ValidatedScopes = new ScopeValidator(new InMemoryResourcesStore(GetIdentityScopes(), GetApiScopes()), new LoggerFactory().CreateLogger<IScopeValidator>()),
                 Client = new Client {
                     AllowRememberConsent = false
                 }
@@ -350,7 +350,7 @@ namespace IdentityServer4.UnitTests.ResponseHandling
                 ResponseMode = OidcConstants.ResponseModes.Fragment,
                 State = "12345",
                 RedirectUri = "https://client.com/callback",
-                ValidatedScopes = new ScopeValidator(new InMemoryResourcesStore(GetIdentityScopes(), GetApiScopes()), new LoggerFactory().CreateLogger<ScopeValidator>()),
+                ValidatedScopes = new ScopeValidator(new InMemoryResourcesStore(GetIdentityScopes(), GetApiScopes()), new LoggerFactory().CreateLogger<IScopeValidator>()),
                 Client = client,
                 Subject = user
             };
