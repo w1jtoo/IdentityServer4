@@ -14,7 +14,7 @@ namespace IdentityServer4.Validation
     /// <summary>
     /// Validates scopes
     /// </summary>
-    public class ScopeValidator
+    public class ScopeValidator : IScopeValidator
     {
         private readonly ILogger _logger;
         private readonly IResourceStore _store;
@@ -49,7 +49,7 @@ namespace IdentityServer4.Validation
         /// <value>
         /// The requested resources.
         /// </value>
-        public Resources RequestedResources { get; internal set; } = new Resources();
+        public Resources RequestedResources { get; set; } = new Resources();
 
         /// <summary>
         /// Gets the granted resources.
@@ -57,14 +57,14 @@ namespace IdentityServer4.Validation
         /// <value>
         /// The granted resources.
         /// </value>
-        public Resources GrantedResources { get; internal set; } = new Resources();
+        public Resources GrantedResources { get; set; } = new Resources();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScopeValidator"/> class.
         /// </summary>
         /// <param name="store">The store.</param>
         /// <param name="logger">The logger.</param>
-        public ScopeValidator(IResourceStore store, ILogger<ScopeValidator> logger)
+        public ScopeValidator(IResourceStore store, ILogger<IScopeValidator> logger)
         {
             _logger = logger;
             _store = store;
@@ -75,7 +75,7 @@ namespace IdentityServer4.Validation
         /// </summary>
         /// <param name="consentedScopes">The consented scopes.</param>
         /// <returns></returns>
-        public bool ValidateRequiredScopes(IEnumerable<string> consentedScopes)
+        public virtual bool ValidateRequiredScopes(IEnumerable<string> consentedScopes)
         {
             var identity = RequestedResources.IdentityResources.Where(x => x.Required).Select(x=>x.Name);
             var apiQuery = from api in RequestedResources.ApiResources
@@ -92,7 +92,7 @@ namespace IdentityServer4.Validation
         /// Sets the consented scopes.
         /// </summary>
         /// <param name="consentedScopes">The consented scopes.</param>
-        public void SetConsentedScopes(IEnumerable<string> consentedScopes)
+        public virtual void SetConsentedScopes(IEnumerable<string> consentedScopes)
         {
             consentedScopes = consentedScopes ?? Enumerable.Empty<string>();
 
@@ -123,7 +123,7 @@ namespace IdentityServer4.Validation
         /// <param name="requestedScopes">The requested scopes.</param>
         /// <param name="filterIdentityScopes">if set to <c>true</c> [filter identity scopes].</param>
         /// <returns></returns>
-        public async Task<bool> AreScopesValidAsync(IEnumerable<string> requestedScopes, bool filterIdentityScopes = false)
+        public virtual async Task<bool> AreScopesValidAsync(IEnumerable<string> requestedScopes, bool filterIdentityScopes = false)
         {
             if (requestedScopes.Contains(IdentityServerConstants.StandardScopes.OfflineAccess))
             {
@@ -205,7 +205,7 @@ namespace IdentityServer4.Validation
         /// <param name="client">The client.</param>
         /// <param name="requestedScopes">The requested scopes.</param>
         /// <returns></returns>
-        public async Task<bool> AreScopesAllowedAsync(Client client, IEnumerable<string> requestedScopes)
+        public virtual async Task<bool> AreScopesAllowedAsync(Client client, IEnumerable<string> requestedScopes)
         {
             if (requestedScopes.Contains(IdentityServerConstants.StandardScopes.OfflineAccess))
             {
@@ -251,7 +251,7 @@ namespace IdentityServer4.Validation
         /// <returns>
         ///   <c>true</c> if the response type is valid; otherwise, <c>false</c>.
         /// </returns>
-        public bool IsResponseTypeValid(string responseType)
+        public virtual bool IsResponseTypeValid(string responseType)
         {
             var requirement = Constants.ResponseTypeToScopeRequirement[responseType];
 
