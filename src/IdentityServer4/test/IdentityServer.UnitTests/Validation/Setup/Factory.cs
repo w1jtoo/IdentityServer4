@@ -26,9 +26,9 @@ namespace IdentityServer4.UnitTests.Validation
             return new InMemoryClientStore(TestClients.Get());
         }
 
-        public static ScopeValidator CreateScopeValidator(IResourceStore store)
+        public static IScopeValidator CreateScopeValidator(IResourceStore store)
         {
-            return new ScopeValidator(store, TestLogger.Create<ScopeValidator>());
+            return new ScopeValidator(store, TestLogger.Create<IScopeValidator>());
         }
 
         public static TokenRequestValidator CreateTokenRequestValidator(
@@ -42,7 +42,7 @@ namespace IdentityServer4.UnitTests.Validation
             IEnumerable<IExtensionGrantValidator> extensionGrantValidators = null,
             ICustomTokenRequestValidator customRequestValidator = null,
             ITokenValidator tokenValidator = null,
-            ScopeValidator scopeValidator = null)
+            IScopeValidator scopeValidator = null)
         {
             if (options == null)
             {
@@ -96,7 +96,7 @@ namespace IdentityServer4.UnitTests.Validation
 
             if (scopeValidator == null)
             {
-                scopeValidator = new ScopeValidator(resourceStore, new LoggerFactory().CreateLogger<ScopeValidator>());
+                scopeValidator = new ScopeValidator(resourceStore, new LoggerFactory().CreateLogger<IScopeValidator>());
             }
 
             if (tokenValidator == null)
@@ -127,7 +127,7 @@ namespace IdentityServer4.UnitTests.Validation
         public static DeviceAuthorizationRequestValidator CreateDeviceAuthorizationRequestValidator(
             IdentityServerOptions options = null,
             IResourceStore resourceStore = null,
-            ScopeValidator scopeValidator = null)
+            IScopeValidator scopeValidator = null)
         {
             if (options == null)
             {
@@ -141,7 +141,7 @@ namespace IdentityServer4.UnitTests.Validation
 
             if (scopeValidator == null)
             {
-                scopeValidator = new ScopeValidator(resourceStore, new LoggerFactory().CreateLogger<ScopeValidator>());
+                scopeValidator = new ScopeValidator(resourceStore, new LoggerFactory().CreateLogger<IScopeValidator>());
             }
 
             return new DeviceAuthorizationRequestValidator(
@@ -157,7 +157,7 @@ namespace IdentityServer4.UnitTests.Validation
             IProfileService profile = null,
             ICustomAuthorizeRequestValidator customValidator = null,
             IRedirectUriValidator uriValidator = null,
-            ScopeValidator scopeValidator = null,
+            IScopeValidator scopeValidator = null,
             JwtRequestValidator jwtRequestValidator = null,
             JwtRequestUriHttpClient jwtRequestUriHttpClient = null)
         {
@@ -188,7 +188,7 @@ namespace IdentityServer4.UnitTests.Validation
 
             if (scopeValidator == null)
             {
-                scopeValidator = new ScopeValidator(resourceStore, new LoggerFactory().CreateLogger<ScopeValidator>());
+                scopeValidator = new ScopeValidator(resourceStore, new LoggerFactory().CreateLogger<IScopeValidator>());
             }
 
             if (jwtRequestValidator == null)

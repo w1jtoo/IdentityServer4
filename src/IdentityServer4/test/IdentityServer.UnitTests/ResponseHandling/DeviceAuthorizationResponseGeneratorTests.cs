@@ -37,7 +37,7 @@ namespace IdentityServer4.UnitTests.ResponseHandling
         public DeviceAuthorizationResponseGeneratorTests()
         {
             var resourceStore = new InMemoryResourcesStore(identityResources, apiResources);
-            var scopeValidator = new ScopeValidator(resourceStore, new NullLogger<ScopeValidator>());
+            var scopeValidator = new ScopeValidator(resourceStore, new NullLogger<IScopeValidator>());
             
             testResult = new DeviceAuthorizationRequestValidationResult(new ValidatedDeviceAuthorizationRequest
             {
